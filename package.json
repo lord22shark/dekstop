@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/lord22shark/dekstop#readme",
   "dependencies": {
+    "chokidar": "^1.7.0",
     "express-ws": "^3.0.0"
   },
   "peerDependencies": {
