@@ -153,16 +153,57 @@ Dekstop.get('/api', (req, res, next) => {
 /**
  *
  */
-Dekstop.ws('/', (ws, req) => {
-
-	const watcher = chokidar.watch('F:\\Desenvolvimento\\JAVASCRIPT\\dekstop\\source.np', {persistent: true});
+Dekstop.ws('/raw', (ws, req) => {
 
 	/**
 	 *
 	 */
-	watcher.on('change', (filename, details) => {
+	ws.on('message', (message) => {
 
-		//ws.send(JSON.stringify(details));
+		fs.writeFile('F:\\Desenvolvimento\\JAVASCRIPT\\dekstop\\source.np', message, (error) => {
+
+			if (error) {
+
+				return console.log(error);
+
+			}
+
+			// git add source.np
+			// git commit -m "Atualização de Date"
+			console.log('GIT');
+
+		}); 
+
+	});
+
+	// Starting...
+	fs.readFile('F:\\Desenvolvimento\\JAVASCRIPT\\dekstop\\source.np', {encoding: 'utf8', flag: 'r'}, (error, source) => {
+
+		let output = source.toString();
+
+		if (error) {
+
+			output = error.message;
+
+		}
+
+		ws.send(output);
+
+	});
+
+});
+
+/**
+ *
+ */
+Dekstop.ws('/rendered', (ws, req) => {
+
+	const readerWatcher = chokidar.watch('F:\\Desenvolvimento\\JAVASCRIPT\\dekstop\\source.np', {persistent: true});
+
+	/**
+	 *
+	 */
+	readerWatcher.on('change', (filename, details) => {
 
 		// Starting...
 		fs.readFile('F:\\Desenvolvimento\\JAVASCRIPT\\dekstop\\source.np', {encoding: 'utf8', flag: 'r'}, (error, source) => {
@@ -188,18 +229,10 @@ Dekstop.ws('/', (ws, req) => {
 
 		console.log('Fechooou');
 
-		watcher.close();
+		readerWatcher.close();
 
 	});
 
-	/**
-	 *
-	 */
-	ws.on('message', (message) => {
-
-		ws.send('ECHO: ' + message);
-
-	});
 
 	// Starting...
 	fs.readFile('F:\\Desenvolvimento\\JAVASCRIPT\\dekstop\\source.np', {encoding: 'utf8', flag: 'r'}, (error, source) => {
@@ -215,8 +248,6 @@ Dekstop.ws('/', (ws, req) => {
 		ws.send(output);
 
 	});
-
-	console.log('Open socket...');
 
 });
 

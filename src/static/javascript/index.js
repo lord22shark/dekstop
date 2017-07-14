@@ -10,13 +10,30 @@ window.onclose = function () {
 
 setTimeout(function () {
 
-	console.log('Socket...');
+	window.sockets = {
+		raw: new WebSocket('ws://localhost:4000/raw'),
+		rendered: new WebSocket('ws://localhost:4000/rendered')
+	};
 
-	window.ws = new WebSocket('ws://localhost:4000/');
+	window.editor = document.getElementById('editor');
 
-	window.ws.onmessage = function (event) {
+	window.spaces = 0;
 
-		console.log(event);
+	/**
+	 *
+	 */
+	window.sockets.raw.onmessage = function (event) {
+
+		window.editor.value = event.data;
+
+		// Should I remove this listener?
+
+	}
+
+	/**
+	 *
+	 */
+	window.sockets.rendered.onmessage = function (event) {
 
 		document.getElementById('rendered').innerHTML = event.data;
 
@@ -50,4 +67,45 @@ setTimeout(function () {
 
 	};
 
-}, 3000);
+	/**
+	 *
+	 */
+	window.editor.onkeypress = function (event) {
+
+		// TODO Handle tab!
+
+		var key = event.keyCode;
+
+		if ((key === 13) || (key === 10)) {
+
+			window.sockets.raw.send(window.editor.value);
+
+			window.spaces = 0;
+
+		} else if (key === 32) {
+
+			window.spaces += 1;
+
+			if (window.spaces === 3) {
+
+				window.sockets.raw.send(window.editor.value);
+
+				window.spaces = 0;
+
+			}
+
+		}
+
+		return true;
+
+	};
+
+	/*setInterval(function () {
+
+		window.sockets.raw.send(window.editor.value);
+
+		console.log('Sent...');
+
+	}, 5000);*/
+
+}, 2000);
