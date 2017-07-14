@@ -1,4 +1,12 @@
-console.log('Dekstop');
+window.onclose = function () {
+
+	if (window.ws) {
+
+		window.ws.close();
+
+	}
+
+}
 
 setTimeout(function () {
 

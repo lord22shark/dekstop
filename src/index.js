@@ -117,9 +117,9 @@ const parser = (source) => {
  */
 Dekstop.use((req, res, next) => {
 
-	console.log('middleware');
+	console.log('Middleware...');
 
-	req.testing = 'testing';
+	//req.testing = 'testing';
 
 	return next();
 
@@ -177,6 +177,8 @@ Dekstop.ws('/', (ws, req) => {
 	 */
 	ws.on('close', () => {
 
+		console.log('Fechooou');
+
 		watcher.close();
 
 	});
@@ -205,7 +207,7 @@ Dekstop.ws('/', (ws, req) => {
 
 	});
 
-	console.log('socket', req.testing);
+	console.log('Open socket...');
 
 });
 

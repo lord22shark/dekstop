@@ -1,4 +1,80 @@
+* {
+	border: 0px;
+	margin: 0px;
+	padding: 0px;
+}
+
+html {
+	height: 100%;
+	width: 100%;
+}
+
 body {
+	align-items: stretch;
 	background-color: #1F1F1F;
 	color: white;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	height: inherit;
+	width: inherit;
+}
+
+.header-container {
+	align-items: center;
+	background-color: #2A2A2A;
+	display: flex;
+	flex: 1 0 80px;
+	flex-direction: row;
+	justify-content: flex-start;
+	max-height: 80px;
+	padding: 10px;
+}
+
+.content-container {
+	align-items: stretch;
+	/*background-color: yellow;*/
+	display: flex;
+	flex: 1 0 auto;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.raw-container {
+	align-items: stretch;
+	/*background-color: red;*/
+	display: flex;
+	flex: 1 0 50%;
+	flex-direction: column;
+	max-width: 50%;
+}
+
+.rendered-container {
+	align-items: stretch;
+	/*background-color: green;*/
+	display: flex;
+	flex: 1 0 50%;
+	flex-direction: column;
+	flex-wrap: wrap;
+	max-width: 50%;
+	word-wrap: break-word;
+}
+
+.editor {
+	background-color: #3B3B3B;
+	border: 1px solid #3C3C3C;
+	font-family: 'Courier New';
+	font-size: 12px;
+	height: 100%;
+	margin: 4px;
+}
+
+.rendered {
+	background-color: #4C4C4C;
+	border: 1px solid #5D5D5D;
+	flex-wrap: wrap;
+	height: 100%;
+	margin: 4px;
+	padding: 4px;
 }
