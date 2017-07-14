@@ -20,6 +20,12 @@ setTimeout(function () {
 
 		document.getElementById('rendered').innerHTML = event.data;
 
+		document.querySelectorAll('pre code').forEach(function (block) {
+
+			hljs.highlightBlock(block)
+
+		});
+
 	};
 
 }, 3000);

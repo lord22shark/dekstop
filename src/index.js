@@ -86,7 +86,7 @@ const parser = (source) => {
 
 					let index = parseInt(copy.replace(/\D+/g, ''));
 
-					copy = `<pre><code lang="${codeMatches[index][1]}">${codeMatches[index][2]}</code></pre>`;
+					copy = `<pre><code class="${codeMatches[index][1]}">${codeMatches[index][2].trim()}</code></pre>`;
 
 				} else if (line[0] === '\t') {
 
@@ -129,6 +129,8 @@ Dekstop.use((req, res, next) => {
  *
  */
 Dekstop.use('/', express.static('./src/static'));
+Dekstop.use('/highlightjs', express.static('./node_modules/highlightjs'));
+//Dekstop.use('/highlightjs', express.static('F:\\Desenvolvimento\\JAVASCRIPT\\dekstop\\node_modules\\highlightjs'));
 
 /**
  *
