@@ -104,7 +104,14 @@ const parser = (source) => {
 
 		});
 
-		html.push(`<div id="${tagMatch[1]}" class="tag-container">${lines.join('\r\n')}</div>`);
+		html.push(`
+			<div class="tag-container">
+				<div id="${tagMatch[1]}-toggler" class="tag-title">${tagMatch[1]}</div>
+				<div id="${tagMatch[1]}-content">
+					${lines.join('\r\n')}
+				</div>
+			</div>
+		`);
 
 	}
 

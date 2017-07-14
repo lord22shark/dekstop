@@ -26,6 +26,28 @@ setTimeout(function () {
 
 		});
 
+		document.querySelectorAll('div.tag-title').forEach(function (element) {
+
+			element.onclick = function (event) {
+
+				var content = document.getElementById(event.target.id.replace('-toggler', '-content'));
+
+				console.log(content);
+
+				if ((content.style.display === 'block') || (content.style.display === '')) {
+
+					content.style.display = 'none';
+
+				} else  {
+
+					content.style.display = 'block';
+
+				}
+
+			};
+
+		});
+
 	};
 
 }, 3000);
