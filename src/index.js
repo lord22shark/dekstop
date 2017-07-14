@@ -90,7 +90,7 @@ const parser = (source) => {
 
 				} else if (line[0] === '\t') {
 
-					copy = `<blockquote>${copy}</blockquote>`;
+					copy = `<p>${copy}</p>`;
 
 				} else {
 
@@ -104,7 +104,7 @@ const parser = (source) => {
 
 		});
 
-		html.push(`<div id="${tagMatch[1]}">${lines.join('\r\n')}</div>`);
+		html.push(`<div id="${tagMatch[1]}" class="tag-container">${lines.join('\r\n')}</div>`);
 
 	}
 

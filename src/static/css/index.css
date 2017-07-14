@@ -9,6 +9,12 @@ html {
 	width: 100%;
 }
 
+p {
+	white-space: initial;
+	text-align: justify;
+	text-indent: 22px;
+}
+
 body {
 	align-items: stretch;
 	background-color: #1F1F1F;
@@ -33,17 +39,14 @@ body {
 
 .content-container {
 	align-items: stretch;
-	/*background-color: yellow;*/
 	display: flex;
 	flex: 1 0 auto;
 	flex-direction: row;
-	flex-wrap: wrap;
 	justify-content: center;
 }
 
 .raw-container {
 	align-items: stretch;
-	/*background-color: red;*/
 	display: flex;
 	flex: 1 0 50%;
 	flex-direction: column;
@@ -52,11 +55,9 @@ body {
 
 .rendered-container {
 	align-items: stretch;
-	/*background-color: green;*/
 	display: flex;
 	flex: 1 0 50%;
 	flex-direction: column;
-	flex-wrap: wrap;
 	max-width: 50%;
 	word-wrap: break-word;
 }
@@ -64,17 +65,27 @@ body {
 .editor {
 	background-color: #3B3B3B;
 	border: 1px solid #3C3C3C;
+	color: white;
 	font-family: 'Courier New';
-	font-size: 12px;
+	font-size: 14px;
 	height: 100%;
+	padding: 10px;
 	margin: 4px;
 }
 
 .rendered {
 	background-color: #4C4C4C;
 	border: 1px solid #5D5D5D;
-	flex-wrap: wrap;
 	height: 100%;
 	margin: 4px;
 	padding: 4px;
+}
+
+/** --- **/
+
+.tag-container {
+	border: 1px solid #4C4C4C;
+	box-shadow: 1px 1px 4px #010101;
+	margin: 0px 4px 20px 4px;
+	padding: 10px;
 }
