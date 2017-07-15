@@ -102,6 +102,13 @@ body {
 	cursor: pointer;
 }
 
+.schedule-bell {
+	height: 16px;
+	margin: 2px;
+	vertical-align: middle;
+	width: 16px;
+}
+
 /** -- OVERRIDE -- **/
 
 .hljs {

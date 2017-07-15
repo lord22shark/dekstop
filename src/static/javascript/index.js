@@ -35,7 +35,11 @@ setTimeout(function () {
 	 */
 	window.sockets.rendered.onmessage = function (event) {
 
-		document.getElementById('rendered').innerHTML = event.data;
+		var data = JSON.parse(event.data);
+
+		document.getElementById('rendered').innerHTML = data.html;
+
+		console.log(data.schedules);
 
 		document.querySelectorAll('pre code').forEach(function (block) {
 

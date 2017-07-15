@@ -16,7 +16,9 @@ const parser = (source) => {
 	const shortHourPattern = /\(\[\{H(\d+)\}\]\)/g;
 	const shortCodePattern = /\(\[\{C(\d+)\}\]\)/g;
 
-	const tagMatches = []; 
+	const tagMatches = [];
+
+	const schedules = [];
 
 	let html = [];
 
@@ -38,6 +40,11 @@ const parser = (source) => {
 		while ((hourMatch = hourPattern.exec(tagMatch[2])) != null) {
 
 			hourMatches.push(hourMatch);
+
+			schedules.push({
+				iso: hourMatch[1],
+				text: hourMatch[2]
+			});
 
 			updated = updated.replace(hourMatch[0], `([{H${hourIndex}}])`);
 
@@ -78,7 +85,7 @@ const parser = (source) => {
 
 					let index = parseInt(shortHourMatch[1]);
 
-					copy = copy.replace(`([{H${index}}])`, `<span data-when="${hourMatches[index][1]}">${hourMatches[index][2]}</span>`);
+					copy = copy.replace(`([{H${index}}])`, `<b data-when="${hourMatches[index][1]}"><img class="schedule-bell" src="images/bell.png" /><span>${hourMatches[index][2]}</span></b>`);
 
 				}
 
@@ -115,7 +122,10 @@ const parser = (source) => {
 
 	}
 
-	return html.join('');
+	return JSON.stringify({
+		html: html.join(''),
+		schedules: schedules
+	});
 
 };
 
@@ -137,18 +147,6 @@ Dekstop.use((req, res, next) => {
  */
 Dekstop.use('/', express.static('./src/static'));
 Dekstop.use('/highlightjs', express.static('./node_modules/highlightjs'));
-//Dekstop.use('/highlightjs', express.static('F:\\Desenvolvimento\\JAVASCRIPT\\dekstop\\node_modules\\highlightjs'));
-
-/**
- *
- */
-Dekstop.get('/api', (req, res, next) => {
-
-	console.log('get route', req.testing);
-
-	res.end();
-
-});
 
 /**
  *
@@ -192,6 +190,7 @@ Dekstop.ws('/raw', (ws, req) => {
 	});
 
 });
+
 
 /**
  *
