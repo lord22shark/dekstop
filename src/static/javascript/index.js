@@ -19,6 +19,10 @@ setTimeout(function () {
 
 	window.spaces = 0;
 
+	window.schedules = [];
+
+	window.schedulesHandler = null;
+
 	/**
 	 *
 	 */
@@ -38,8 +42,6 @@ setTimeout(function () {
 		var data = JSON.parse(event.data);
 
 		document.getElementById('rendered').innerHTML = data.html;
-
-		console.log(data.schedules);
 
 		document.querySelectorAll('pre code').forEach(function (block) {
 
@@ -69,6 +71,9 @@ setTimeout(function () {
 
 		});
 
+		// Schedules
+		window.schedules = data.schedules
+
 	};
 
 	/**
@@ -77,6 +82,7 @@ setTimeout(function () {
 	window.editor.onkeypress = function (event) {
 
 		// TODO Handle tab!
+		// TODO Handle control + s
 
 		var key = event.keyCode;
 
@@ -104,12 +110,25 @@ setTimeout(function () {
 
 	};
 
-	/*setInterval(function () {
+	/**
+	 *
+	 */
+	window.schedulesHandler = setInterval(function () {
 
-		window.sockets.raw.send(window.editor.value);
+		window.schedules.forEach(function (item, index) {
 
-		console.log('Sent...');
+			if (!item.alert) {
 
-	}, 5000);*/
+				window.alert(item.text + ' às ' + item.iso);
+
+				//window.schedules[index].alert = true;
+
+				item.alert = true;
+
+			}
+
+		});
+
+	}, 2000);
 
 }, 2000);

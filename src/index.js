@@ -25,6 +25,8 @@ const parser = (source) => {
 	// ---
 	let tagMatch;
 
+	const now = new Date().getTime();
+
 	while ((tagMatch = tagPattern.exec(source)) != null) {
 
 		let updated = tagMatch[2];
@@ -41,10 +43,16 @@ const parser = (source) => {
 
 			hourMatches.push(hourMatch);
 
-			schedules.push({
-				iso: hourMatch[1],
-				text: hourMatch[2]
-			});
+			let include = new Date(hourMatch[1]).getTime();
+
+			if ((now >= include - 300000) && (now <= include + 300000)) {
+
+				schedules.push({
+					iso: hourMatch[1],
+					text: hourMatch[2]
+				});
+
+			}
 
 			updated = updated.replace(hourMatch[0], `([{H${hourIndex}}])`);
 
@@ -85,7 +93,7 @@ const parser = (source) => {
 
 					let index = parseInt(shortHourMatch[1]);
 
-					copy = copy.replace(`([{H${index}}])`, `<b data-when="${hourMatches[index][1]}"><img class="schedule-bell" src="images/bell.png" /><span>${hourMatches[index][2]}</span></b>`);
+					copy = copy.replace(`([{H${index}}])`, `<u data-when="${hourMatches[index][1]}"><img class="schedule-bell" src="images/bell.png" /><span>${hourMatches[index][2].trim()}</span></u>`);
 
 				}
 
@@ -134,7 +142,7 @@ const parser = (source) => {
  */
 Dekstop.use((req, res, next) => {
 
-	console.log('Middleware...');
+	//console.log('Middleware...');
 
 	//req.testing = 'testing';
 
