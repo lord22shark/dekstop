@@ -49,7 +49,7 @@ setTimeout(function () {
 
 		});
 
-		document.querySelectorAll('div.tag-title').forEach(function (element) {
+		/*document.querySelectorAll('div.tag-title').forEach(function (element) {
 
 			element.onclick = function (event) {
 
@@ -69,7 +69,7 @@ setTimeout(function () {
 
 			};
 
-		});
+		});*/
 
 		// Schedules
 		window.schedules = data.schedules

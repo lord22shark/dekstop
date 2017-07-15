@@ -97,6 +97,8 @@ const parser = (source) => {
 
 				}
 
+				// TODO: regex to parse links http or https
+
 				if (shortCodePattern.test(copy)) {
 
 					let index = parseInt(copy.replace(/\D+/g, ''));
@@ -105,7 +107,9 @@ const parser = (source) => {
 
 				} else if (line[0] === '\t') {
 
-					copy = `<p>${copy}</p>`;
+					let count = ((line.match(/\t/g) || []).length) * 22;
+
+					copy = `<p style="text-indent: ${count}px">${copy}</p>`;
 
 				} else {
 
