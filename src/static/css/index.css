@@ -41,13 +41,13 @@ body {
 	display: flex;
 	flex: 1 0 auto;
 	flex-direction: row;
-	justify-content: center;
+	justify-content: space-between;
 }
 
 .raw-container {
 	align-items: stretch;
 	display: flex;
-	flex: 1 0 50%;
+	flex: 1 0 auto;
 	flex-direction: column;
 	max-width: 50%;
 }
@@ -55,7 +55,7 @@ body {
 .rendered-container {
 	align-items: stretch;
 	display: flex;
-	flex: 1 0 50%;
+	flex: 1 0 auto;
 	flex-direction: column;
 	max-width: 50%;
 	word-wrap: break-word;
