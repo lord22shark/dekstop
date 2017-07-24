@@ -27,10 +27,10 @@ For this reason I build this **Dekstop**. But what are the points?
 
 ### Context Blocks
 
+> Only texts inside these blocks will be parsed. Everything outside of it will be ignored. Please... avoid nested blocks. I still do not know what can happen :-(
+
 ```
 /@ [NAME_OF_CONTEXT_BLOCK]
-
-> Only texts inside these blocks will be parsed. Everything outside of it will be ignored. Please... avoid nested blocks. I still do not know what can happen :-(
 
 ...
 
