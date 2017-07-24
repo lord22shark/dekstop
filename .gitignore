@@ -59,4 +59,5 @@ typings/
 
 # DEKSTOP
 
-/data
+data
+data/source.np
