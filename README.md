@@ -17,6 +17,7 @@ For this reason I build this **Dekstop**. But what are the points?
 
 1. When you press `Ctrl + S`;
 2. When you press *Return* or *Enter*
+
     ```javascript
     ((key === 13) || (key === 10))
     ```
@@ -28,6 +29,8 @@ For this reason I build this **Dekstop**. But what are the points?
 
 ```
 /@ [NAME_OF_CONTEXT_BLOCK]
+
+> Only texts inside these blocks will be parsed. Everything outside of it will be ignored. Please... avoid nested blocks. I still do not know what can happen :-(
 
 ...
 
