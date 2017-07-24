@@ -112,7 +112,7 @@ const parser = (source) => {
 
 					let index = parseInt(shortHourMatch[1]);
 
-					copy = copy.replace(`([{H${index}}])`, `<u data-when="${hourMatches[index][1]}"><img class="schedule-bell" src="images/bell.png" /><span>${hourMatches[index][2].trim()}</span></u>`);
+					copy = copy.replace(`([{H${index}}])`, `<u title="${hourMatches[index][1]}"><img class="schedule-bell" src="images/bell.png" /><span>${hourMatches[index][2].trim()}</span></u>`);
 
 				}
 

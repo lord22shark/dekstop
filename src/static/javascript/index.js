@@ -104,16 +104,33 @@ setTimeout(function () {
 	/**
 	 *
 	 */
-	window.editor.onkeypress = function (event) {
+	window.editor.onkeydown = function (event) {
 
-		// TODO Handle tab!
-		// TODO Handle control + s
+		var key = event.which;
 
-		var key = event.keyCode;
+		if (event.keyCode === 9) {
 
-		console.log(event);
+			event.preventDefault();
 
-		if ((key === 13) || (key === 10)) {
+			var start = this.selectionStart;
+
+			var end = this.selectionEnd;
+
+			var target = event.target;
+
+			var value = target.value;
+
+			target.value = value.substring(0, start) + '\t' + value.substring(end);
+
+			this.selectionStart = this.selectionEnd = start + 1;
+
+		} else if ((key === 83) && (event.ctrlKey === true)) {
+
+			event.preventDefault();
+
+			window.sockets.raw.send(window.editor.value);
+
+		} else if ((key === 13) || (key === 10)) {
 
 			window.sockets.raw.send(window.editor.value);
 
