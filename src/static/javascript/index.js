@@ -21,7 +21,7 @@ setTimeout(function () {
 
 	window.schedules = [];
 
-	window.schedulesHandler = null;
+	window.schedulesInterval = null;
 
 	/**
 	 *
@@ -72,7 +72,32 @@ setTimeout(function () {
 		});*/
 
 		// Schedules
-		window.schedules = data.schedules
+
+		//clearInterval(window.schedulesInterval);
+
+		/*data.schedules.forEach(function (newSchedule) {
+
+			if (window.schedules.length === 0) {
+
+				window.schedules.push(newSchedule);
+
+			} else {
+
+				window.schedules.forEach(function (oldSchedule) {
+
+					if (oldSchedule.id !== newSchedule.id) {
+
+						window.schedules.push(newSchedule);
+
+					}
+
+				});
+
+			}
+
+		});*/
+
+		//window.schedulesInterval = setInterval(window.schedulesHandler, 1000);
 
 	};
 
@@ -85,6 +110,8 @@ setTimeout(function () {
 		// TODO Handle control + s
 
 		var key = event.keyCode;
+
+		console.log(event);
 
 		if ((key === 13) || (key === 10)) {
 
@@ -106,29 +133,42 @@ setTimeout(function () {
 
 		}
 
-		return true;
+	};
+
+	/**
+	 *
+	 */
+	window.schedulesHandler = function () {
+
+		var now = new Date().getTime();
+
+		window.schedules.forEach(function (item, index, source) {
+
+			var timestamp = new Date(item.iso).getTime();
+
+			// if past, delete
+
+			if (timestamp === now) {
+
+				console.log('AGORA', item);
+
+			} else if (!item.alert) {
+
+				console.log(item);
+
+				source[index].alert = true;
+
+			}
+
+		});
+
+		console.log(window.schedules);
 
 	};
 
 	/**
 	 *
 	 */
-	window.schedulesHandler = setInterval(function () {
-
-		window.schedules.forEach(function (item, index) {
-
-			if (!item.alert) {
-
-				window.alert(item.text + ' às ' + item.iso);
-
-				//window.schedules[index].alert = true;
-
-				item.alert = true;
-
-			}
-
-		});
-
-	}, 2000);
+	//window.schedulesInterval = setInterval(window.schedulesHandler, 1000);
 
 }, 2000);

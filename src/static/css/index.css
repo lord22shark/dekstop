@@ -9,6 +9,10 @@ html {
 	width: 100%;
 }
 
+a {
+	color: #B2FFF1;
+}
+
 p {
 	white-space: initial;
 	text-align: justify;

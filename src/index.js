@@ -7,7 +7,11 @@ const Dekstop = express();
 const expressWs = require('express-ws')(Dekstop);
 const fs = require('fs');
 const chokidar = require('chokidar');
+const md5 = require('md5');
 
+/**
+ *
+ */
 const parser = (source) => {
 
 	const tagPattern = /\/\@\s{1}\[([A-Z0-9a-z\-\_]+)\]([^]*?)\[\@\\/gm;
@@ -15,6 +19,7 @@ const parser = (source) => {
 	const codePattern = /\/\@\s{1}\{([A-Z0-9a-z\-\_\+\#]+)\}([^]*?)\{\@\\/gm;
 	const shortHourPattern = /\(\[\{H(\d+)\}\]\)/g;
 	const shortCodePattern = /\(\[\{C(\d+)\}\]\)/g;
+	const urlPattern = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
 
 	const tagMatches = [];
 
@@ -49,7 +54,8 @@ const parser = (source) => {
 
 				schedules.push({
 					iso: hourMatch[1],
-					text: hourMatch[2]
+					text: hourMatch[2],
+					id: md5(`${hourMatch[1]}-${hourMatch[2]}`) 
 				});
 
 			}
@@ -87,6 +93,18 @@ const parser = (source) => {
 
 			if ((copy) && (copy != '')) {
 
+				const urls = copy.match(urlPattern);
+
+				if ((urls) && (urls.length > 0)) {
+
+					urls.forEach(function (url) {
+
+						copy = copy.replace(url, `<a target="_blank" href="${url}">${url}</a>`);
+
+					});
+
+				}
+
 				let shortHourMatch;
 
 				while ((shortHourMatch = shortHourPattern.exec(copy)) != null) {
@@ -96,8 +114,6 @@ const parser = (source) => {
 					copy = copy.replace(`([{H${index}}])`, `<u data-when="${hourMatches[index][1]}"><img class="schedule-bell" src="images/bell.png" /><span>${hourMatches[index][2].trim()}</span></u>`);
 
 				}
-
-				// TODO: regex to parse links http or https
 
 				if (shortCodePattern.test(copy)) {
 
