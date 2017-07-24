@@ -8,6 +8,7 @@ const expressWs = require('express-ws')(Dekstop);
 const fs = require('fs');
 const chokidar = require('chokidar');
 const md5 = require('md5');
+const {exec} = require('child_process');
 
 /**
  *
@@ -160,11 +161,11 @@ const parser = (source) => {
 /**
  *
  */
-Dekstop.use((req, res, next) => {
+Dekstop.use((request, res, next) => {
 
 	//console.log('Middleware...');
 
-	//req.testing = 'testing';
+	//request.testing = 'testing';
 
 	return next();
 
@@ -179,14 +180,14 @@ Dekstop.use('/highlightjs', express.static('./node_modules/highlightjs'));
 /**
  *
  */
-Dekstop.ws('/raw', (ws, req) => {
+Dekstop.ws('/raw', (ws, request) => {
 
 	/**
 	 *
 	 */
 	ws.on('message', (message) => {
 
-		fs.writeFile('F:\\Desenvolvimento\\JAVASCRIPT\\dekstop\\source.np', message, (error) => {
+		fs.writeFile(request.app.locals.filename, message, (error) => {
 
 			if (error) {
 
@@ -194,16 +195,22 @@ Dekstop.ws('/raw', (ws, req) => {
 
 			}
 
-			// git add source.np
-			// git commit -m "Atualização de Date"
-			console.log('GIT');
+			exec(`cd ${request.app.locals.path} && git add source.np && git commit -m "Automatic update."`, (giterror) => {
+
+				if (giterror) {
+
+					console.error(`GIT EXECUTION ERROR: ${giterror}`);
+
+				}
+
+			});
 
 		}); 
 
 	});
 
 	// Starting...
-	fs.readFile('F:\\Desenvolvimento\\JAVASCRIPT\\dekstop\\source.np', {encoding: 'utf8', flag: 'r'}, (error, source) => {
+	fs.readFile(request.app.locals.filename, {encoding: 'utf8', flag: 'r'}, (error, source) => {
 
 		let output = source.toString();
 
@@ -223,9 +230,9 @@ Dekstop.ws('/raw', (ws, req) => {
 /**
  *
  */
-Dekstop.ws('/rendered', (ws, req) => {
+Dekstop.ws('/rendered', (ws, request) => {
 
-	const readerWatcher = chokidar.watch('F:\\Desenvolvimento\\JAVASCRIPT\\dekstop\\source.np', {persistent: true});
+	const readerWatcher = chokidar.watch(request.app.locals.filename, {persistent: true});
 
 	/**
 	 *
@@ -233,7 +240,7 @@ Dekstop.ws('/rendered', (ws, req) => {
 	readerWatcher.on('change', (filename, details) => {
 
 		// Starting...
-		fs.readFile('F:\\Desenvolvimento\\JAVASCRIPT\\dekstop\\source.np', {encoding: 'utf8', flag: 'r'}, (error, source) => {
+		fs.readFile(request.app.locals.filename, {encoding: 'utf8', flag: 'r'}, (error, source) => {
 
 			let output = parser(source.toString());
 
@@ -262,7 +269,7 @@ Dekstop.ws('/rendered', (ws, req) => {
 
 
 	// Starting...
-	fs.readFile('F:\\Desenvolvimento\\JAVASCRIPT\\dekstop\\source.np', {encoding: 'utf8', flag: 'r'}, (error, source) => {
+	fs.readFile(request.app.locals.filename, {encoding: 'utf8', flag: 'r'}, (error, source) => {
 
 		let output = parser(source.toString());
 
