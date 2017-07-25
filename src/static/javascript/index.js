@@ -148,7 +148,11 @@ setTimeout(function () {
 
 		}
 
-		document.querySelector('div.tag-container[data-title=\'' + window.currentSection + '\']').className += ' active';
+		if (window.currentSection) {
+
+			document.querySelector('div.tag-container[data-title=\'' + window.currentSection + '\']').className += ' active';
+
+		}
 
 	};
 
