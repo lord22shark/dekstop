@@ -140,13 +140,15 @@ setTimeout(function () {
 	 */
 	window.sectionToggler = function () {
 
-		document.querySelectorAll('div.tag-container:not([data-title=\'' + window.currentSection + '\'])').forEach(function (element) {
+		var active = document.querySelector('div.tag-container.active');
 
-			element.style.display = 'none';
+		if (active) {
 
-		});
+			active.className = 'tag-container';
 
-		document.querySelector('div.tag-container[data-title=\'' + window.currentSection + '\']').style.display = 'block';
+		}
+
+		document.querySelector('div.tag-container[data-title=\'' + window.currentSection + '\']').className += ' active';
 
 	};
 

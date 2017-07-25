@@ -93,6 +93,13 @@ body {
 	padding: 10px;
 }
 
+.tag-container.active {
+	background-color: #2D2D2D;
+}
+
+.tag-container.active > div > pre > code {
+	background-color: #2D2D2D;
+}
 
 .tag-title {
 	text-align: center;
