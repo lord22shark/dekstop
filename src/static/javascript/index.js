@@ -29,6 +29,8 @@ setTimeout(function () {
 
 	window.schedulesInterval = null;
 
+	window.currentSection = null;
+
 	/**
 	 *
 	 */
@@ -54,6 +56,12 @@ setTimeout(function () {
 			hljs.highlightBlock(block)
 
 		});
+
+		if (window.currentSection) {
+
+			window.sectionToggler();
+
+		}
 
 		/*document.querySelectorAll('div.tag-title').forEach(function (element) {
 
@@ -110,6 +118,17 @@ setTimeout(function () {
 	/**
 	 *
 	 */
+	window.editor.onclick = function (event) {
+
+		window.sectionDetector.bind(this)();
+
+		window.sectionToggler();
+
+	};
+
+	/**
+	 *
+	 */
 	window.editor.onkeydown = function (event) {
 
 		var key = event.which;
@@ -136,9 +155,13 @@ setTimeout(function () {
 
 			window.sockets.raw.send(window.editor.value);
 
+			window.sectionDetector.bind(this)();
+
 		} else if ((key === 13) || (key === 10)) {
 
 			window.sockets.raw.send(window.editor.value);
+
+			window.sectionDetector.bind(this)();
 
 			window.spaces = 0;
 
@@ -149,6 +172,8 @@ setTimeout(function () {
 			if (window.spaces === 3) {
 
 				window.sockets.raw.send(window.editor.value);
+
+				window.sectionDetector.bind(this)();
 
 				window.spaces = 0;
 
@@ -186,6 +211,36 @@ setTimeout(function () {
 		});
 
 		console.log(window.schedules);
+
+	};
+
+	/**
+	 *
+	 */
+	window.sectionToggler = function () {
+
+		document.querySelectorAll('div.tag-container:not([data-title=\'' + window.currentSection + '\'])').forEach(function (element) {
+
+			element.style.display = 'none';
+
+		});
+
+		document.querySelector('div.tag-container[data-title=\'' + window.currentSection + '\']').style.display = 'block';
+
+	};
+
+	/**
+	 *
+	 */
+	window.sectionDetector = function () {
+
+		var text = window.editor.value;
+
+		var start = text.lastIndexOf('/@ [', this.selectionStart);
+
+		var end = text.indexOf(']', start) + 1;
+
+		window.currentSection = text.substring(start, end).match(/\/\@\s\[(.*)\]/)[1];
 
 	};
 

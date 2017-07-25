@@ -141,9 +141,9 @@ const parser = (source) => {
 		});
 
 		html.push(`
-			<div class="tag-container">
+			<div class="tag-container" data-title="${tagMatch[1]}">
 				<div id="${tagMatch[1]}-toggler" class="tag-title">${tagMatch[1]}</div>
-				<div id="${tagMatch[1]}-content">
+				<div id="${tagMatch[1]}-content" class="tag-content">
 					${lines.join('\r\n')}
 				</div>
 			</div>
