@@ -18,7 +18,7 @@ const parser = (source) => {
 	const tagPattern = /\/\@\s{1}\[([A-Z0-9a-z\-\_]+)\]([^]*?)\[\@\\/gm;
 	const hourPattern = /\/\@\s{1}\((\d{4}\-\d{2}\-\d{2}\s{1}\d{2}\:\d{2}\:\d{2})\)([^]*?)\(\@\\/gm;
 	const codePattern = /\/\@\s{1}\{([A-Z0-9a-z\-\_\+\#]+)\}([^]*?)\{\@\\/gm;
-	const shortHourPattern = /\(\[\{H(\d+)\}\]\)/g;
+	const shortHourPattern = /\(\[\{H(A|B|N)(\d+)\}\]\)/g;
 	const shortCodePattern = /\(\[\{C(\d+)\}\]\)/g;
 	const urlPattern = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
 
@@ -51,17 +51,37 @@ const parser = (source) => {
 
 			let include = new Date(hourMatch[1]).getTime();
 
-			if ((now >= include - 300000) && (now <= include + 300000)) {
+			let color;
+
+			let before = include - 300000;
+
+			let after = include + 300000;
+
+			// 5 minutes window
+			if ((now >= before) && (now <= after)) {
+
+				color = 'N';
 
 				schedules.push({
 					iso: hourMatch[1],
 					text: hourMatch[2],
+					timestamp: include,
 					id: md5(`${hourMatch[1]}-${hourMatch[2]}`) 
 				});
 
+			// After 5 minutes window
+			} else if (now > after) {
+
+				color = 'A';
+
+			// Before 5 minutes window
+			} else if (now < before) {
+
+				color = 'B';
+
 			}
 
-			updated = updated.replace(hourMatch[0], `([{H${hourIndex}}])`);
+			updated = updated.replace(hourMatch[0], `([{H${color}${hourIndex}}])`);
 
 			hourIndex++;
 
@@ -110,9 +130,13 @@ const parser = (source) => {
 
 				while ((shortHourMatch = shortHourPattern.exec(copy)) != null) {
 
-					let index = parseInt(shortHourMatch[1]);
+					let index = parseInt(shortHourMatch[2]);
 
-					copy = copy.replace(`([{H${index}}])`, `<u title="${hourMatches[index][1]}"><img class="schedule-bell" src="images/bell.png" /><span>${hourMatches[index][2].trim()}</span></u>`);
+					let color = shortHourMatch[1];
+
+					let style = `schedule-time-${color}`;
+
+					copy = copy.replace(`([{H${color}${index}}])`, `<b class="${style}" title="${hourMatches[index][1]}"><img class="schedule-bell" src="images/bell.png" /><span>${hourMatches[index][2].trim()}</span></b>`);
 
 				}
 
@@ -159,17 +183,14 @@ const parser = (source) => {
 };
 
 /**
- *
- */
+ * Middleware purposes
+
 Dekstop.use((request, res, next) => {
-
-	//console.log('Middleware...');
-
-	//request.testing = 'testing';
 
 	return next();
 
 });
+ */
 
 /**
  *
@@ -261,7 +282,7 @@ Dekstop.ws('/rendered', (ws, request) => {
 	 */
 	ws.on('close', () => {
 
-		console.log('Fechooou');
+		console.log('Client closed socket connection!');
 
 		readerWatcher.close();
 

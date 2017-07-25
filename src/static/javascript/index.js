@@ -63,55 +63,7 @@ setTimeout(function () {
 
 		}
 
-		/*document.querySelectorAll('div.tag-title').forEach(function (element) {
-
-			element.onclick = function (event) {
-
-				var content = document.getElementById(event.target.id.replace('-toggler', '-content'));
-
-				console.log(content);
-
-				if ((content.style.display === 'block') || (content.style.display === '')) {
-
-					content.style.display = 'none';
-
-				} else  {
-
-					content.style.display = 'block';
-
-				}
-
-			};
-
-		});*/
-
-		// Schedules
-
-		//clearInterval(window.schedulesInterval);
-
-		/*data.schedules.forEach(function (newSchedule) {
-
-			if (window.schedules.length === 0) {
-
-				window.schedules.push(newSchedule);
-
-			} else {
-
-				window.schedules.forEach(function (oldSchedule) {
-
-					if (oldSchedule.id !== newSchedule.id) {
-
-						window.schedules.push(newSchedule);
-
-					}
-
-				});
-
-			}
-
-		});*/
-
-		//window.schedulesInterval = setInterval(window.schedulesHandler, 1000);
+		window.schedules = data.schedules;
 
 	};
 
@@ -186,37 +138,6 @@ setTimeout(function () {
 	/**
 	 *
 	 */
-	window.schedulesHandler = function () {
-
-		var now = new Date().getTime();
-
-		window.schedules.forEach(function (item, index, source) {
-
-			var timestamp = new Date(item.iso).getTime();
-
-			// if past, delete
-
-			if (timestamp === now) {
-
-				console.log('AGORA', item);
-
-			} else if (!item.alert) {
-
-				console.log(item);
-
-				source[index].alert = true;
-
-			}
-
-		});
-
-		console.log(window.schedules);
-
-	};
-
-	/**
-	 *
-	 */
 	window.sectionToggler = function () {
 
 		document.querySelectorAll('div.tag-container:not([data-title=\'' + window.currentSection + '\'])').forEach(function (element) {
@@ -247,6 +168,34 @@ setTimeout(function () {
 	/**
 	 *
 	 */
-	//window.schedulesInterval = setInterval(window.schedulesHandler, 1000);
+	window.schedulesHandler = function () {
+
+		if ((window.schedules) && (window.schedules.length > 0)) {
+
+			var now = new Date();
+
+			now.setMilliseconds(0);
+
+			now = now.getTime();
+
+			window.schedules.forEach(function (schedule) {
+
+				if (schedule.timestamp === now) {
+
+					window.alert(schedule.text);
+
+				}
+
+			}); 
+
+
+		}
+
+	};
+
+	/**
+	 *
+	 */
+	window.schedulesInterval = setInterval(window.schedulesHandler, 1000);
 
 }, 2000);

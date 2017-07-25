@@ -102,15 +102,23 @@ body {
 	padding-bottom: 5px;
 }
 
-.tag-title:hover {
-	cursor: pointer;
-}
-
 .schedule-bell {
 	height: 16px;
 	margin: 2px;
 	vertical-align: middle;
 	width: 16px;
+}
+
+.schedule-time-N {
+	color: #FF5959;
+}
+
+.schedule-time-A {
+	color: #A5A5A5;
+}
+
+.schedule-time-B {
+	color: #7CD67C;
 }
 
 /** -- OVERRIDE -- **/
