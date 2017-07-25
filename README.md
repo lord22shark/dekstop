@@ -13,6 +13,21 @@ For this reason I build this **Dekstop**. But what are the points?
 6. Uses websocket
 7. Written in JavaScript
 
+## REQUIREMENTS
+
+To run this thing you need:
+
+* GIT
+* NodeJS - use a version that support ES6
+
+## SETUP
+
+After cloning this repository, you must run:
+
+```bash
+npm install
+```
+
 ## When my text is updated?
 
 1. When you press `Ctrl + S`;
@@ -68,6 +83,8 @@ After cloning the repository, open a Terminal or Command Prompt and type the fol
 ```bash
 node index.js
 ```
+
+and then lauch your browser and go to `http://localhost:4000`.
 
 The data folder, by default, is `../data`... in another words, a sibling directory of this repository. I put it outside of the project to avoid git submodules and to allow more control of your source files.
 
