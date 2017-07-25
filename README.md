@@ -88,15 +88,17 @@ and then lauch your browser and go to `http://localhost:4000`.
 
 The data folder, by default, is `../data`... in another words, a sibling directory of this repository. I put it outside of the project to avoid git submodules and to allow more control of your source files.
 
-> There are **2** ways of changing this folder:
+The default *port* is **4000** if none is provided. You can change it along with data folder.
+
+> There are **2** ways of changing the port and folder:
 
 1. By ARGS:
     
     ```bash
-    node index.js /path/to/my/desired/folder
+    node index.js /path/to/my/desired/folder 5000
     ```
 2. By ENVVAR:
 
     ```bash
-    SET DEKSTOP_PATH=/path/to/my/desired/folder && node index.js
+    SET DEKSTOP_PATH=/path/to/my/desired/folder && SET DEKSTOP_PORT=5000 && node index.js
     ```

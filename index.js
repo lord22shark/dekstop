@@ -8,6 +8,7 @@ const {exec} = require('child_process');
 const path = require('path');
 
 const dekstoppath = (process.argv[2] || process.env.DEKSTOP_PATH || '../data').trim();
+const dekstopport = (parseInt(process.argv[3].trim()) || parseInt(process.env.DEKSTOP_PORT.trim()) || 4000)
 
 const filename = [dekstoppath, 'source.np'].join(path.sep);
 
@@ -48,9 +49,9 @@ try {
 
 	fs.statSync(gitpath);
 
-	Dekstop.listen(4000);
+	Dekstop.listen(dekstopport);
 
-	console.log('Listening...');
+	console.log(`DEKSTOP server is now listening on port ${dekstopport}...`);
 
 } catch (error) {
 
@@ -68,9 +69,9 @@ try {
 
 		console.log(`stderr: ${stderr}`);
 
-		Dekstop.listen(4000);
+		Dekstop.listen(dekstopport);
 
-		console.log('Listening...');
+		console.log(`DEKSTOP server is now listening on port ${dekstopport}...`);
 
 	});
 

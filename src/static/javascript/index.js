@@ -17,8 +17,8 @@ window.onclose = function () {
 setTimeout(function () {
 
 	window.sockets = {
-		raw: new WebSocket('ws://localhost:4000/raw'),
-		rendered: new WebSocket('ws://localhost:4000/rendered')
+		raw: new WebSocket('ws://' + window.location.host + '/raw'),
+		rendered: new WebSocket('ws://' + window.location.host + '/rendered')
 	};
 
 	window.editor = document.getElementById('editor');
