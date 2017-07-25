@@ -22,10 +22,10 @@ To run this thing you need:
 
 ## SETUP
 
-After cloning this repository, you must run:
+After cloning this repository, in its folder (root), you must run:
 
 ```bash
-npm install
+npm install && npm install express@^4.0.0
 ```
 
 ## When my text is updated?
