@@ -15,7 +15,7 @@ const {exec} = require('child_process');
  */
 const parser = (source) => {
 
-	const tagPattern = /\/\@\s{1}\[([A-Z0-9a-z\-\_]+)\]([^]*?)\[\@\\/gm;
+	const tagPattern = /\/\@\s{1}\[([A-Z0-9a-z\-\_ ]+)\]([^]*?)\[\@\\/gm;
 	const hourPattern = /\/\@\s{1}\((\d{4}\-\d{2}\-\d{2}\s{1}\d{2}\:\d{2}\:\d{2})\)([^]*?)\(\@\\/gm;
 	const codePattern = /\/\@\s{1}\{([A-Z0-9a-z\-\_\+\#]+)\}([^]*?)\{\@\\/gm;
 	const shortHourPattern = /\(\[\{H(A|B|N)(\d+)\}\]\)/g;
