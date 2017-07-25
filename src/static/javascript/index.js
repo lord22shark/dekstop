@@ -1,8 +1,14 @@
 window.onclose = function () {
 
-	if (window.ws) {
+	if (window.sockets.raw) {
 
-		window.ws.close();
+		window.sockets.raw.close();
+
+	}
+
+	if (window.sockets.rendered) {
+
+		window.sockets.rendered.close();
 
 	}
 
