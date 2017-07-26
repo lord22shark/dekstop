@@ -6,13 +6,28 @@ const fs = require('fs');
 const Dekstop = require('./src/index.js');
 const {exec} = require('child_process');
 const path = require('path');
+const EventLogger = require('node-windows').EventLogger;
+const Logger = new EventLogger('Dekstop');
 
-const dekstoppath = (process.argv[2] || process.env.DEKSTOP_PATH || '../data').trim();
-const dekstopport = (parseInt(process.argv[3].trim()) || parseInt(process.env.DEKSTOP_PORT.trim()) || 4000)
+const dekstoppath = (process.env.DEKSTOP_PATH || process.argv[2] || '../data').trim();
+const dekstopport = parseInt((process.env.DEKSTOP_PORT || process.argv[3]).trim()) || 4000;
 
 const filename = [dekstoppath, 'source.np'].join(path.sep);
 
 const gitpath = [dekstoppath, '.git'].join(path.sep);
+
+/**
+ *
+ */
+const echo = (message, level) => {
+
+	const output = level || 'info';
+
+	console.log(message);
+
+	Logger[output](message);
+
+};
 
 Dekstop.locals.filename = filename;
 Dekstop.locals.path = dekstoppath;
@@ -29,7 +44,7 @@ try {
 
 		fs.writeFileSync(filename, 'Welcome to Dekstop!');
 
-		console.log('Source file created!');
+		echo('Source file created!');
 
 	}
 
@@ -37,11 +52,11 @@ try {
 
 	fs.mkdirSync(dekstoppath);
 
-	console.log('Data directory created!');
+	echo('Data directory created!');
 
 	fs.writeFileSync(filename, 'Welcome to Dekstop!');
 
-	console.log('Source file created!');
+	echo('Source file created!');
 
 }
 
@@ -51,7 +66,7 @@ try {
 
 	Dekstop.listen(dekstopport);
 
-	console.log(`DEKSTOP server is now listening on port ${dekstopport}...`);
+	echo(`DEKSTOP server is now listening on port ${dekstopport}...`);
 
 } catch (error) {
 
@@ -59,19 +74,19 @@ try {
 
 		if (error) {
 
-			console.error(`exec error: ${error}`);
+			echo(`exec error: ${error}`, error);
 
 			return;
 
 		}
 
-		console.log(`stdout: ${stdout}`);
+		echo(`stdout: ${stdout}`);
 
-		console.log(`stderr: ${stderr}`);
+		echo(`stderr: ${stderr}`, warn);
 
 		Dekstop.listen(dekstopport);
 
-		console.log(`DEKSTOP server is now listening on port ${dekstopport}...`);
+		echo(`DEKSTOP server is now listening on port ${dekstopport}...`);
 
 	});
 

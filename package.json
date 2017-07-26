@@ -29,7 +29,8 @@
     "express-ws": "^3.0.0",
     "highlightjs": "^9.10.0",
     "html-entities": "^1.2.1",
-    "md5": "^2.2.1"
+    "md5": "^2.2.1",
+    "node-windows": "^0.1.14"
   },
   "peerDependencies": {
     "express": "^4.0.0"
