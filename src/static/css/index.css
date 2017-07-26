@@ -29,6 +29,22 @@ body {
 	width: inherit;
 }
 
+code::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #5E5E5E;
+	border-radius: 10px;
+}
+
+code::-webkit-scrollbar {
+	width: 12px;
+}
+
+code::-webkit-scrollbar-thumb {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #555;
+	border-radius: 10px;
+}
+
 .header-container {
 	align-items: center;
 	background-color: #2A2A2A;

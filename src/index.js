@@ -9,6 +9,7 @@ const fs = require('fs');
 const chokidar = require('chokidar');
 const md5 = require('md5');
 const {exec} = require('child_process');
+const Entities = new require('html-entities').AllHtmlEntities;
 
 /**
  *
@@ -18,8 +19,8 @@ const parser = (source) => {
 	const tagPattern = /\/\@\s{1}\[([A-Z0-9a-z\-\_ ]+)\]([^]*?)\[\@\\/gm;
 	const hourPattern = /\/\@\s{1}\((\d{4}\-\d{2}\-\d{2}\s{1}\d{2}\:\d{2}\:\d{2})\)([^]*?)\(\@\\/gm;
 	const codePattern = /\/\@\s{1}\{([A-Z0-9a-z\-\_\+\#]+)\}([^]*?)\{\@\\/gm;
-	const shortHourPattern = /\(\[\{H(A|B|N)(\d+)\}\]\)/g;
-	const shortCodePattern = /\(\[\{C(\d+)\}\]\)/g;
+	const shortHourPattern = /\(\[\{H(A|B|N)(\d+)\}\]\)/;
+	const shortCodePattern = /\<\(\[\{C(\d+)\}\]\)\>/;
 	const urlPattern = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
 
 	const tagMatches = [];
@@ -98,7 +99,7 @@ const parser = (source) => {
 
 			codeMatches.push(codeMatch);
 
-			updated = updated.replace(codeMatch[0], `([{C${matchIndex}}])`);
+			updated = updated.replace(codeMatch[0], `<([{C${matchIndex}}])>`);
 
 			matchIndex++;
 
@@ -140,11 +141,12 @@ const parser = (source) => {
 
 				}
 
-				if (shortCodePattern.test(copy)) {
 
-					let index = parseInt(copy.replace(/\D+/g, ''));
+				let shortCodeMatch = shortCodePattern.exec(copy);
 
-					copy = `<pre><code class="${codeMatches[index][1]}">${codeMatches[index][2].trim()}</code></pre>`;
+				if (shortCodeMatch) {
+
+					copy = `<pre><code class="${codeMatches[shortCodeMatch[1]][1]}">${Entities.encode(codeMatches[shortCodeMatch[1]][2].trim())}</code></pre>`;
 
 				} else if (line[0] === '\t') {
 

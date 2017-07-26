@@ -1,36 +1,37 @@
 {
-	"name": "dekstop",
-	"version": "1.0.0",
-	"description": "Dekstop is a sandbox, a draft text file with an associated parser that shows an enhanced view and commits, with git, every update. The name \"Dekstop\" is a prank with brazilians that do not know how to speak Desktop.",
-	"main": "index.js",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/lord22shark/dekstop.git"
-	},
-	"keywords": [
-		"dekstop",
-		"sandbox",
-		"textpad",
-		"websocket",
-		"nodejs",
-		"javascript"
-	],
-	"author": "Jaime Daniel Corrêa Mendes",
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/lord22shark/dekstop/issues"
-	},
-	"homepage": "https://github.com/lord22shark/dekstop#readme",
-	"dependencies": {
-		"chokidar": "^1.7.0",
-		"express-ws": "^3.0.0",
-		"highlightjs": "^9.10.0",
-		"md5": "^2.2.1"
-	},
-	"peerDependencies": {
-		"express": "^4.0.0"
-	}
+  "name": "dekstop",
+  "version": "1.0.0",
+  "description": "Dekstop is a sandbox, a draft text file with an associated parser that shows an enhanced view and commits, with git, every update. The name \"Dekstop\" is a prank with brazilians that do not know how to speak Desktop.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lord22shark/dekstop.git"
+  },
+  "keywords": [
+    "dekstop",
+    "sandbox",
+    "textpad",
+    "websocket",
+    "nodejs",
+    "javascript"
+  ],
+  "author": "Jaime Daniel Corrêa Mendes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lord22shark/dekstop/issues"
+  },
+  "homepage": "https://github.com/lord22shark/dekstop#readme",
+  "dependencies": {
+    "chokidar": "^1.7.0",
+    "express-ws": "^3.0.0",
+    "highlightjs": "^9.10.0",
+    "html-entities": "^1.2.1",
+    "md5": "^2.2.1"
+  },
+  "peerDependencies": {
+    "express": "^4.0.0"
+  }
 }
