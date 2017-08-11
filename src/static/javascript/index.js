@@ -105,13 +105,19 @@ setTimeout(function () {
 
 			event.preventDefault();
 
-			window.sockets.raw.send(window.editor.value);
+			window.sockets.raw.send(JSON.stringify({
+				value: window.editor.value,
+				commit: true
+			}));
 
 			window.sectionDetector.bind(this)();
 
 		} else if ((key === 13) || (key === 10)) {
 
-			window.sockets.raw.send(window.editor.value);
+			window.sockets.raw.send(JSON.stringify({
+				value: window.editor.value,
+				commit: false
+			}));
 
 			window.sectionDetector.bind(this)();
 
@@ -123,7 +129,10 @@ setTimeout(function () {
 
 			if (window.spaces === 3) {
 
-				window.sockets.raw.send(window.editor.value);
+				window.sockets.raw.send(JSON.stringify({
+					value: window.editor.value,
+					commit: false
+				}));
 
 				window.sectionDetector.bind(this)();
 
@@ -150,7 +159,13 @@ setTimeout(function () {
 
 		if (window.currentSection) {
 
-			document.querySelector('div.tag-container[data-title=\'' + window.currentSection + '\']').className += ' active';
+			var element = document.querySelector('div.tag-container[data-title=\'' + window.currentSection + '\']');
+
+			if (element) {
+
+				element.className += ' active';
+
+			}
 
 		}
 
@@ -165,9 +180,13 @@ setTimeout(function () {
 
 		var start = text.lastIndexOf('/@ [', this.selectionStart);
 
-		var end = text.indexOf(']', start) + 1;
+		if (start !== -1) {
 
-		window.currentSection = text.substring(start, end).match(/\/\@\s\[(.*)\]/)[1];
+			var end = text.indexOf(']', start) + 1;
+
+			window.currentSection = text.substring(start, end).match(/\/\@\s\[(.*)\]/)[1];
+
+		}
 
 	};
 

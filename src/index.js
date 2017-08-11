@@ -10,6 +10,8 @@ const chokidar = require('chokidar');
 const md5 = require('md5');
 const {exec} = require('child_process');
 const Entities = new require('html-entities').AllHtmlEntities;
+const EventLogger = require('node-windows').EventLogger;
+const Logger = new EventLogger('Dekstop');
 
 /**
  *
@@ -210,23 +212,41 @@ Dekstop.ws('/raw', (ws, request) => {
 	 */
 	ws.on('message', (message) => {
 
-		fs.writeFile(request.app.locals.filename, message, (error) => {
+		var parsedMessage = JSON.parse(message);
+
+		fs.writeFile(request.app.locals.filename, parsedMessage.value, (error) => {
 
 			if (error) {
+
+				Logger.error(error);
 
 				return console.log(error);
 
 			}
 
-			exec(`cd ${request.app.locals.path} && git add source.np && git commit -m "Automatic update."`, (giterror) => {
+			if (parsedMessage.commit === true) {
 
-				if (giterror) {
+				let command = `cd ${request.app.locals.path} && git add source.np && git commit -m "Automatic update."`;
 
-					console.error(`GIT EXECUTION ERROR: ${giterror}`);
+				if (/^win/.test(process.platform)) {
+
+					command = `${request.app.locals.path.substr(0,2)} && ${command}`
 
 				}
 
-			});
+				exec(command, (giterror) => {
+
+					if (giterror) {
+
+						Logger.error(`GIT EXECUTION ERROR: ${giterror}`);
+
+						console.error(`GIT EXECUTION ERROR: ${giterror}`);
+
+					}
+
+				});
+
+			}
 
 		}); 
 

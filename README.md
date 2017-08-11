@@ -18,7 +18,7 @@ For this reason I build this **Dekstop**. But what are the points?
 To run this thing you need:
 
 * GIT
-* NodeJS - use a version that support ES6
+* NodeJS - use a version that supports ES6
 
 ## SETUP
 
@@ -30,7 +30,7 @@ npm install && npm install express@^4.0.0
 
 ## When my text is updated?
 
-1. When you press `Ctrl + S`;
+1. When you press `Ctrl + S` `In this scenario, git add && git commit will be called.`;
 2. When you press *Return* or *Enter*
 
     ```javascript
