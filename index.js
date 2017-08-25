@@ -82,7 +82,7 @@ try {
 
 		echo(`stdout: ${stdout}`);
 
-		echo(`stderr: ${stderr}`, warn);
+		echo(`stderr: ${stderr}`, 'warn');
 
 		Dekstop.listen(dekstopport);
 

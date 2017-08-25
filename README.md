@@ -102,3 +102,7 @@ The default *port* is **4000** if none is provided. You can change it along with
     ```bash
     SET DEKSTOP_PATH=/path/to/my/desired/folder && SET DEKSTOP_PORT=5000 && node index.js
     ```
+
+# CHANGELOG
+
+1. **2017-08-25 11:23:** added the clipboard function. Still needs some adjustments (like clipboard by active section). To use it, press Ctrl + Shift + #, being # a number between 0 and 9. Another included feature is `viewOnlyMode`. You can open this in another machine, another browser with `/#view`. It is quite useful if you want a clipboard between 2 or more machines.

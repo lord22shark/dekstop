@@ -16,12 +16,19 @@ window.onclose = function () {
 
 setTimeout(function () {
 
+	// TODO: clipboard by TAG and click to activate
+	// TODO Ctrl + Shift + D
+	// TODO: accept hour:minutes
+	var isViewOnly = window.location.hash.indexOf('view') !== -1;
+
+	console.log(isViewOnly);
+
 	window.sockets = {
-		raw: new WebSocket('ws://' + window.location.host + '/raw'),
+		raw: (isViewOnly === true) ? null : new WebSocket('ws://' + window.location.host + '/raw'),
 		rendered: new WebSocket('ws://' + window.location.host + '/rendered')
 	};
 
-	window.editor = document.getElementById('editor');
+	window.editor = (isViewOnly === true) ? null : document.getElementById('editor');
 
 	window.spaces = 0;
 
@@ -31,16 +38,28 @@ setTimeout(function () {
 
 	window.currentSection = null;
 
-	/**
-	 *
-	 */
-	window.sockets.raw.onmessage = function (event) {
-
-		window.editor.value = event.data;
-
-		// Should I remove this listener?
-
-	}
+	window.clipboardShortcuts = {
+		'96': 0,
+		'97': 1,
+		'98': 2,
+		'99': 3,
+		'100': 4,
+		'101': 5,
+		'102': 6,
+		'103': 7,
+		'104': 8,
+		'105': 9,
+		'48': 0,
+		'49': 1,
+		'50': 2,
+		'51': 3,
+		'52': 4,
+		'53': 5,
+		'54': 6,
+		'55': 7,
+		'56': 8,
+		'57': 9
+	};
 
 	/**
 	 *
@@ -65,130 +84,70 @@ setTimeout(function () {
 
 		window.schedules = data.schedules;
 
-	};
-
-	/**
-	 *
-	 */
-	window.editor.onclick = function (event) {
-
-		window.sectionDetector.bind(this)();
-
-		window.sectionToggler();
+		window.clipboard = data.clipboard;
 
 	};
 
 	/**
 	 *
 	 */
-	window.editor.onkeydown = function (event) {
+	document.body.onkeydown = function (event) {
 
 		var key = event.which;
 
-		if (event.keyCode === 9) {
+		if ((event.ctrlKey === true) && (event.shiftKey === true) && (key.toString() in window.clipboardShortcuts)) {
 
-			event.preventDefault();
+			console.log(key, key.toString() in window.clipboardShortcuts);
 
-			var start = this.selectionStart;
+			var clipboard = window.clipboard[window.clipboardShortcuts[key.toString()]];
 
-			var end = this.selectionEnd;
+			if (clipboard) {
 
-			var target = event.target;
+				var textArea = document.createElement("textarea");
 
-			var value = target.value;
+				try {
 
-			target.value = value.substring(0, start) + '\t' + value.substring(end);
+					// ---
 
-			this.selectionStart = this.selectionEnd = start + 1;
+					textArea.style.position = 'fixed';
+					textArea.style.top = -10;
+					textArea.style.left = -10;
+					textArea.style.width = '2em';
+					textArea.style.height = '2em';
+					textArea.style.padding = 0;
+					textArea.style.border = 'none';
+					textArea.style.outline = 'none';
+					textArea.style.boxShadow = 'none';
+					textArea.style.background = 'transparent';
+					textArea.value = clipboard.data;
 
-		} else if ((key === 83) && (event.ctrlKey === true)) {
+					document.body.appendChild(textArea);
 
-			event.preventDefault();
+					textArea.select();
 
-			window.sockets.raw.send(JSON.stringify({
-				value: window.editor.value,
-				commit: true
-			}));
+					// ---
 
-			window.sectionDetector.bind(this)();
+					document.execCommand('copy');
 
-		} else if ((key === 13) || (key === 10)) {
+					toastr.success(clipboard.data, clipboard.tag);
 
-			window.sockets.raw.send(JSON.stringify({
-				value: window.editor.value,
-				commit: false
-			}));
+				} catch (e) {
 
-			window.sectionDetector.bind(this)();
+					toastr.error(clipboard.data, clipboard.tag);
 
-			window.spaces = 0;
+				}
 
-		} else if (key === 32) {
+				document.body.removeChild(textArea);
 
-			window.spaces += 1;
+			} else {
 
-			if (window.spaces === 3) {
-
-				window.sockets.raw.send(JSON.stringify({
-					value: window.editor.value,
-					commit: false
-				}));
-
-				window.sectionDetector.bind(this)();
-
-				window.spaces = 0;
+				toastr.warning('No item for ' + window.clipboardShortcuts[key.toString()] + ' clipboard index.');
 
 			}
 
 		}
 
-	};
-
-	/**
-	 *
-	 */
-	window.sectionToggler = function () {
-
-		var active = document.querySelector('div.tag-container.active');
-
-		if (active) {
-
-			active.className = 'tag-container';
-
-		}
-
-		if (window.currentSection) {
-
-			var element = document.querySelector('div.tag-container[data-title=\'' + window.currentSection + '\']');
-
-			if (element) {
-
-				element.className += ' active';
-
-			}
-
-		}
-
-	};
-
-	/**
-	 *
-	 */
-	window.sectionDetector = function () {
-
-		var text = window.editor.value;
-
-		var start = text.lastIndexOf('/@ [', this.selectionStart);
-
-		if (start !== -1) {
-
-			var end = text.indexOf(']', start) + 1;
-
-			window.currentSection = text.substring(start, end).match(/\/\@\s\[(.*)\]/)[1];
-
-		}
-
-	};
+	}
 
 	/**
 	 *
@@ -217,6 +176,150 @@ setTimeout(function () {
 		}
 
 	};
+
+	if (isViewOnly === false) {
+
+		/**
+		 *
+		 */
+		window.sockets.raw.onmessage = function (event) {
+
+			window.editor.value = event.data;
+
+			// Should I remove this listener?
+
+		}
+
+		/**
+		 *
+		 */
+		window.editor.onclick = function (event) {
+
+			window.sectionDetector.bind(this)();
+
+			window.sectionToggler();
+
+		};
+
+		/**
+		 *
+		 */
+		window.editor.onkeydown = function (event) {
+
+			var key = event.which;
+
+			if (event.keyCode === 9) {
+
+				event.preventDefault();
+
+				var start = this.selectionStart;
+
+				var end = this.selectionEnd;
+
+				var target = event.target;
+
+				var value = target.value;
+
+				target.value = value.substring(0, start) + '\t' + value.substring(end);
+
+				this.selectionStart = this.selectionEnd = start + 1;
+
+			} else if ((key === 83) && (event.ctrlKey === true)) {
+
+				event.preventDefault();
+
+				window.sockets.raw.send(JSON.stringify({
+					value: window.editor.value,
+					commit: true
+				}));
+
+				window.sectionDetector.bind(this)();
+
+			} else if ((key === 13) || (key === 10)) {
+
+				window.sockets.raw.send(JSON.stringify({
+					value: window.editor.value,
+					commit: false
+				}));
+
+				window.sectionDetector.bind(this)();
+
+				window.spaces = 0;
+
+			} else if (key === 32) {
+
+				window.spaces += 1;
+
+				if (window.spaces === 3) {
+
+					window.sockets.raw.send(JSON.stringify({
+						value: window.editor.value,
+						commit: false
+					}));
+
+					window.sectionDetector.bind(this)();
+
+					window.spaces = 0;
+
+				}
+
+			}
+
+		};
+
+		/**
+		 *
+		 */
+		window.sectionToggler = function () {
+
+			var active = document.querySelector('div.tag-container.active');
+
+			if (active) {
+
+				active.className = 'tag-container';
+
+			}
+
+			if (window.currentSection) {
+
+				var element = document.querySelector('div.tag-container[data-title=\'' + window.currentSection + '\']');
+
+				if (element) {
+
+					element.className += ' active';
+
+				}
+
+			}
+
+		};
+
+		/**
+		 *
+		 */
+		window.sectionDetector = function () {
+
+			var text = window.editor.value;
+
+			var start = text.lastIndexOf('/@ [', this.selectionStart);
+
+			if (start !== -1) {
+
+				var end = text.indexOf(']', start) + 1;
+
+				window.currentSection = text.substring(start, end).match(/\/\@\s\[(.*)\]/)[1];
+
+			}
+
+		};
+
+	} else {
+
+		document.getElementById('rawContainer').remove();
+
+		document.getElementById('renderedContainer').style.maxWidth = '100%';
+
+	}
 
 	/**
 	 *

@@ -21,6 +21,7 @@ const parser = (source) => {
 	const tagPattern = /\/\@\s{1}\[([A-Z0-9a-z\-\_ ]+)\]([^]*?)\[\@\\/gm;
 	const hourPattern = /\/\@\s{1}\((\d{4}\-\d{2}\-\d{2}\s{1}\d{2}\:\d{2}\:\d{2})\)([^]*?)\(\@\\/gm;
 	const codePattern = /\/\@\s{1}\{([A-Z0-9a-z\-\_\+\#]+)\}([^]*?)\{\@\\/gm;
+	const clipboardPattern = /\/\@\s{1}\<CB\>([^]*?)\<\@\\/gm;
 	const shortHourPattern = /\(\[\{H(A|B|N)(\d+)\}\]\)/;
 	const shortCodePattern = /\<\(\[\{C(\d+)\}\]\)\>/;
 	const urlPattern = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
@@ -28,6 +29,8 @@ const parser = (source) => {
 	const tagMatches = [];
 
 	const schedules = [];
+
+	const clipboard = [];
 
 	let html = [];
 
@@ -107,6 +110,20 @@ const parser = (source) => {
 
 		}
 
+		// Clipboard
+		let clipboardMatch;
+
+		while ((clipboardMatch = clipboardPattern.exec(tagMatch[2])) != null) {
+
+			clipboard.push({
+				tag: tagMatch[1],
+				data: clipboardMatch[1]
+			});
+
+			updated = updated.replace(clipboardMatch[0], clipboardMatch[1]);
+
+		}
+
 		// to HTML
 
 		let lines = updated.split(/[\r\n]+/g);
@@ -181,7 +198,8 @@ const parser = (source) => {
 
 	return JSON.stringify({
 		html: html.join(''),
-		schedules: schedules
+		schedules: schedules,
+		clipboard: clipboard
 	});
 
 };
@@ -201,6 +219,8 @@ Dekstop.use((request, res, next) => {
  */
 Dekstop.use('/', express.static('./src/static'));
 Dekstop.use('/highlightjs', express.static('./node_modules/highlightjs'));
+Dekstop.use('/toastr', express.static('./node_modules/toastr/build'));
+Dekstop.use('/jquery', express.static('./node_modules/jquery/dist'));
 
 /**
  *

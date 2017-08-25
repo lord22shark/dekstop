@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<link href="/highlightjs/styles/hybrid.css" media="screen" rel="stylesheet" />
+		<link href="/toastr/toastr.min.css" media="screen" rel="stylesheet" />
 		<link href="css/index.css" media="screen" rel="stylesheet" />
 	</head>
 	<body>
@@ -9,14 +10,16 @@
 			DEKSTOP
 		</header>
 		<div class="content-container">
-			<section class="raw-container">
+			<section id="rawContainer" class="raw-container">
 				<textarea id="editor" class="editor">Loading...</textarea>
 			</section>
-			<section class="rendered-container">
+			<section id="renderedContainer" class="rendered-container">
 				<pre id="rendered" class="rendered">Loading...</pre>
 			</section>
 		</div>
+		<script type="text/javascript" src="/jquery/jquery.min.js"></script>
 		<script type="text/javascript" src="/highlightjs/highlight.pack.min.js"></script>
+		<script type="text/javascript" src="/toastr/toastr.min.js"></script>
 		<script type="text/javascript" src="javascript/index.js"></script>
 	</body>
 </html>
