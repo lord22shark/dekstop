@@ -19,8 +19,14 @@ To run this thing you need:
 
 * GIT
 * NodeJS - use a version that supports ES6
+* [Forever](https://github.com/foreverjs/forever) ~0.15.3 [Optional to run as a service]
 
 ## SETUP
+
+Before cloning this repository, IF YOU DESIRE, install Forever globally, if you do not already have it
+```bash
+npm install -g forever
+```
 
 After cloning this repository, in its folder (root), you must run:
 
@@ -78,7 +84,7 @@ npm install && npm install express@^4.0.0
 
 ## And how I run this stuff?
 
-After cloning the repository, open a Terminal or Command Prompt and type the following command in the root directory:
+After cloning the repository, open a Terminal or Command Prompt and type the following command in the project root directory:
 
 ```bash
 node index.js
@@ -103,6 +109,17 @@ The default *port* is **4000** if none is provided. You can change it along with
     SET DEKSTOP_PATH=/path/to/my/desired/folder && SET DEKSTOP_PORT=5000 && node index.js
     ```
 
+> Running with Forever. This runs Dekstop as a deamon... and to manage its child process, use forever commands.
+
+1. FOREVER -> in this project (root directory) runs the following command:
+
+    ```bash
+    forever start -m 1 -l dekstop.forever.log -o dekstop.log -e dekstop.log -a -f -d -v -t index.js "[PATH]" "[PORT]"
+    ```
+
+`PATH` and `PORT` are optional parameters like running directly with node. If no envvars provided, Dekstop will use default values.
+
 # CHANGELOG
 
 1. **2017-08-25 11:23:** added the clipboard function. Still needs some adjustments (like clipboard by active section). To use it, press Ctrl + Shift + #, being # a number between 0 and 9. Another included feature is `viewOnlyMode`. You can open this in another machine, another browser with `/#view`. It is quite useful if you want a clipboard between 2 or more machines.
+2. **2018-01-02 17:45:** removed Windows specific dependencies, allowing to run with Forever
