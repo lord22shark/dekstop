@@ -9,7 +9,7 @@ const path = require('path');
 
 const port = process.env.DEKSTOP_PORT || process.argv[3];
 
-const dekstoppath = (process.env.DEKSTOP_PATH || process.argv[2] || '../data').trim();
+const dekstoppath = (process.env.DEKSTOP_PATH || process.argv[2] || path.join('.', '.data')).trim();
 const dekstopport = (!!port) ? parseInt(port.trim()) : 4000;
 
 const filename = [dekstoppath, 'source.np'].join(path.sep);

@@ -25,16 +25,15 @@
   },
   "homepage": "https://github.com/lord22shark/dekstop#readme",
   "dependencies": {
-    "chokidar": "^1.7.0",
-    "express-ws": "^3.0.0",
-    "highlightjs": "^9.10.0",
+    "chokidar": "^3.1.1",
+    "express": "^4.17.1",
+    "express-ws": "^4.0.0",
+    "forever": "^1.0.0",
+    "highlightjs": "^9.12.0",
     "html-entities": "^1.2.1",
-    "jquery": "^3.2.1",
+    "jquery": "^3.4.1",
+    "vue": "^2.6.10",
     "md5": "^2.2.1",
-    "node-windows": "^0.1.14",
-    "toastr": "^2.1.2"
-  },
-  "peerDependencies": {
-    "express": "^4.0.0"
+    "toastr": "^2.1.4"
   }
 }

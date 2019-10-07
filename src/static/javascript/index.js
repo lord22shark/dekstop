@@ -21,8 +21,6 @@ setTimeout(function () {
 	// TODO: accept hour:minutes
 	var isViewOnly = window.location.hash.indexOf('view') !== -1;
 
-	console.log(isViewOnly);
-
 	window.sockets = {
 		raw: (isViewOnly === true) ? null : new WebSocket('ws://' + window.location.host + '/raw'),
 		rendered: new WebSocket('ws://' + window.location.host + '/rendered')
@@ -34,9 +32,15 @@ setTimeout(function () {
 
 	window.schedules = [];
 
+	window.shownSchedules = [];
+
 	window.schedulesInterval = null;
 
 	window.currentSection = null;
+
+	window.tagTitleOptions = document.getElementById('tagTitleOptions'); // TODO onchange
+
+	window.audioNotification = document.getElementById('audioNotification');
 
 	window.clipboardShortcuts = {
 		'96': 0,
@@ -66,6 +70,8 @@ setTimeout(function () {
 	 */
 	window.sockets.rendered.onmessage = function (event) {
 
+		toastr.clear();
+
 		var data = JSON.parse(event.data);
 
 		document.getElementById('rendered').innerHTML = data.html;
@@ -73,6 +79,18 @@ setTimeout(function () {
 		document.querySelectorAll('pre code').forEach(function (block) {
 
 			hljs.highlightBlock(block)
+
+		});
+
+		document.querySelectorAll('div.tag-title').forEach(function (element) {
+
+			var option = document.createElement('option');
+
+			option.innerHTML = element.innerHTML;
+
+			option.element = element;
+
+			window.tagTitleOptions.appendChild(option);
 
 		});
 
@@ -96,8 +114,6 @@ setTimeout(function () {
 		var key = event.which;
 
 		if ((event.ctrlKey === true) && (event.shiftKey === true) && (key.toString() in window.clipboardShortcuts)) {
-
-			console.log(key, key.toString() in window.clipboardShortcuts);
 
 			var clipboard = window.clipboard[window.clipboardShortcuts[key.toString()]];
 
@@ -145,6 +161,10 @@ setTimeout(function () {
 
 			}
 
+		} else if (event.ctrlKey === true && key === 112) {
+
+			window.tagTitleOptions.focus();
+
 		}
 
 	}
@@ -164,9 +184,27 @@ setTimeout(function () {
 
 			window.schedules.forEach(function (schedule) {
 
-				if (schedule.timestamp === now) {
+				if (window.shownSchedules.indexOf(schedule.id) === -1) {
 
-					window.alert(schedule.text);
+					var me = new Date(schedule.iso).getTime();
+
+					var before = me - 300000;
+
+					var after = me + 300000;
+
+					if ((now >= before) && (now <= after)) {
+
+						toastr.warning(schedule.text, schedule.iso, {closeButton: true, timeOut: 0, extendedTimeOut: 0});
+
+						if (window.audioNotification.paused === true || window.audioNotification.currentTime === 0) {
+
+							window.audioNotification.play();
+
+						}
+
+						window.shownSchedules.push(schedule.id);
+
+					}
 
 				}
 
