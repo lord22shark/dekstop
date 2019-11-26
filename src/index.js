@@ -8,11 +8,9 @@
 const express = require('express');
 const fs = require('fs');
 const chokidar = require('chokidar');
-const md5 = require('md5');
 const {exec} = require('child_process');
 const Dekstop = express();
 const expressWs = require('express-ws')(Dekstop);
-const Entities = new require('html-entities').AllHtmlEntities;
 
 /**
  * Internal Dependencies

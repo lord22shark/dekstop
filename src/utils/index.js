@@ -1,3 +1,6 @@
+const md5 = require('md5');
+const Entities = new require('html-entities').AllHtmlEntities;
+
 /**
  *
  */
