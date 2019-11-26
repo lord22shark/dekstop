@@ -54,9 +54,18 @@ body {
 	width: inherit;
 }
 
+a {
+	color: goldenrod !important;
+}
+
+a:hover {
+	color: gold !important;
+}
+
 p {
 	margin-block-start: 2px !important;
 	margin-block-end: 2px !important;
+	word-break: break-all;
 }
 
 .d-dekstop {
