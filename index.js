@@ -23,6 +23,7 @@ const DEKSTOP_PATH = process.env.DEKSTOP_PATH;
 const DEKSTOP_PORT = process.env.DEKSTOP_PORT;
 const DEKSTOP_GIT_NAME = process.env.DEKSTOP_GIT_NAME;
 const DEKSTOP_GIT_EMAIL = process.env.DEKSTOP_GIT_EMAIL;
+const DESKTOP_BIND_IP = process.env.DESKTOP_BIND_IP || '127.0.0.1';
 
 const gitpath = path.join(DEKSTOP_PATH, '.git');
 
@@ -50,9 +51,11 @@ try {
 
 	fs.statSync(gitpath);
 
-	Dekstop.listen(DEKSTOP_PORT);
+	Dekstop.listen(DEKSTOP_PORT, DESKTOP_BIND_IP.split(','), () => {
 
-	console.log(`DEKSTOP server is now listening on port ${DEKSTOP_PORT}...`);
+		console.log(`DEKSTOP server is now listening on port ${DEKSTOP_PORT}...`);
+
+	});
 
 } catch (error) {
 
@@ -73,9 +76,11 @@ try {
 
 		}
 
-		Dekstop.listen(DEKSTOP_PORT);
+		Dekstop.listen(DEKSTOP_PORT, DESKTOP_BIND_IP.split(','), () => {
 
-		console.log(`DEKSTOP server is now listening on port ${DEKSTOP_PORT}...`);
+			console.log(`DEKSTOP server is now listening on port ${DEKSTOP_PORT}...`);
+
+		});
 
 	});
 

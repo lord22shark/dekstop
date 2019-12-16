@@ -259,11 +259,14 @@ function onMessage (message) {
 
 							let command = `cd "${Dekstop.locals.fullpath}" && git add -u * && git commit -m "Automatic update."`;
 
-							exec(command, (giterror) => {
+							exec(command, (giterror, stdout, stderror) => {
 
 								if (giterror) {
 
 									console.error(`GIT EXECUTION ERROR: ${giterror}`);
+									console.error(`STDOUT: ${stdout}`);
+									console.error(`STDERROR: ${stderror}`);
+									console.log('----');
 
 								}
 
@@ -329,11 +332,14 @@ function onMessage (message) {
 
 						let command = `cd "${Dekstop.locals.fullpath}" && git add "${filename}" && git commit -m "Created block."`;
 
-						exec(command, (giterror) => {
+						exec(command, (giterror, stdout, stderror) => {
 
 							if (giterror) {
 
 								console.error(`GIT EXECUTION ERROR: ${giterror}`);
+								console.error(`STDOUT: ${stdout}`);
+								console.error(`STDERROR: ${stderror}`);
+								console.log('----');
 
 							}
 
@@ -359,11 +365,14 @@ function onMessage (message) {
 
 						let command = `cd "${Dekstop.locals.fullpath}" && git rm "${deleteFilename}" && git commit -m "Deleted block."`;
 
-						exec(command, (giterror) => {
+						exec(command, (giterror, stdout, stderror) => {
 
 							if (giterror) {
 
 								console.error(`GIT EXECUTION ERROR: ${giterror}`);
+								console.error(`STDOUT: ${stdout}`);
+								console.error(`STDERROR: ${stderror}`);
+								console.log('----');
 
 							}
 
@@ -389,11 +398,14 @@ function onMessage (message) {
 
 						let command = `cd "${Dekstop.locals.fullpath}" && git add -u * && git commit -m "Code Block Added."`;
 
-						exec(command, (giterror) => {
+						exec(command, (giterror, stdout, stderror) => {
 
 							if (giterror) {
 
 								console.error(`GIT EXECUTION ERROR: ${giterror}`);
+								console.error(`STDOUT: ${stdout}`);
+								console.error(`STDERROR: ${stderror}`);
+								console.log('----');
 
 							}
 
@@ -419,11 +431,14 @@ function onMessage (message) {
 
 						let command = `cd "${Dekstop.locals.fullpath}" && git add -u * && git commit -m "Schedule Block Added."`;
 
-						exec(command, (giterror) => {
+						exec(command, (giterror, stdout, stderror) => {
 
 							if (giterror) {
 
 								console.error(`GIT EXECUTION ERROR: ${giterror}`);
+								console.error(`STDOUT: ${stdout}`);
+								console.error(`STDERROR: ${stderror}`);
+								console.log('----');
 
 							}
 
@@ -449,11 +464,14 @@ function onMessage (message) {
 
 						let command = `cd "${Dekstop.locals.fullpath}" && git add -u * && git commit -m "Clipboard Block Added."`;
 
-						exec(command, (giterror) => {
+						exec(command, (giterror, stdout, stderror) => {
 
 							if (giterror) {
 
 								console.error(`GIT EXECUTION ERROR: ${giterror}`);
+								console.error(`STDOUT: ${stdout}`);
+								console.error(`STDERROR: ${stderror}`);
+								console.log('----');
 
 							}
 
