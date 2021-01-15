@@ -581,7 +581,7 @@ Dekstop.ws('/connect', (websocket, request) => {
 
 	});
 
-	console.log(`[CONNECTED] New client: ${_id}`);
+	console.log(`[CONNECTED] New client: ${_id}`, new Date().toISOString());
 
 });
 

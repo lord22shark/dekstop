@@ -102,6 +102,8 @@
 
 			window.audioNotification = document.getElementById('audioNotification');
 
+			// const _id = Math.random().toString(16).split('.')[1].toUpperCase();
+
 			window.Dekstop = new Vue({
 				el: '#dekstop',
 				data: {
@@ -118,6 +120,7 @@
 					schedules: [],
 					shownSchedules: [],
 					spaces: 0,
+					rns: 0,
 					shortcuts: {
 						'96': 0,
 						'97': 1,
@@ -569,16 +572,24 @@
 					 */
 					onEditorKeyDownRN: function (event) {
 
-						this.spaces = 0;
+						this.rns += 1;
+
+						if (this.rns === 3) {
 						
-						this.websocket.send(JSON.stringify({
-							message: 'onSave',
-							data: {
-								block: this.block,
-								text: this.editor,
-								commit: false
-							}
-						}));
+							this.websocket.send(JSON.stringify({
+								message: 'onSave',
+								data: {
+									block: this.block,
+									text: this.editor,
+									commit: false
+								}
+							}));
+
+							this.rns = 0;
+
+							this.spaces = 0;
+
+						}
 
 
 					},
@@ -602,6 +613,8 @@
 							}));
 
 							this.spaces = 0;
+
+							this.rns = 0;
 
 						}
 
