@@ -25,18 +25,17 @@
   },
   "homepage": "https://github.com/lord22shark/dekstop#readme",
   "dependencies": {
-    "chokidar": "^3.1.1",
-    "dotenv": "^8.1.0",
+    "chokidar": "^3.5.1",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-ws": "^4.0.0",
-    "forever": "^1.0.0",
-    "glob": "^7.1.5",
-    "highlightjs": "^9.12.0",
-    "html-entities": "^1.2.1",
-    "jquery": "^3.4.1",
-    "md5": "^2.2.1",
-    "moment": "^2.24.0",
+    "glob": "^7.1.6",
+    "highlightjs": "^9.16.2",
+    "html-entities": "^2.0.2",
+    "jquery": "^3.5.1",
+    "md5": "^2.3.0",
+    "moment": "^2.29.1",
     "toastr": "^2.1.4",
-    "vue": "^2.6.10"
+    "vue": "^2.6.12"
   }
 }

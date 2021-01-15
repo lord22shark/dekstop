@@ -1,7 +1,7 @@
 const md5 = require('md5');
 const path = require('path');
 const fs = require('fs');
-const Entities = new require('html-entities').AllHtmlEntities;
+const {encode} = require('html-entities');
 const Glob = require("glob")
 
 /**
@@ -353,7 +353,7 @@ const parser = (source, stringify) => {
 
 				if (shortCodeMatch) {
 
-					copy = `<pre><code class="${codeMatches[shortCodeMatch[1]][1]}">${Entities.encode(codeMatches[shortCodeMatch[1]][2].trim())}</code></pre>`;
+					copy = `<pre><code class="${codeMatches[shortCodeMatch[1]][1]}">${encode(codeMatches[shortCodeMatch[1]][2].trim())}</code></pre>`;
 
 				} else if (line[0] === '\t') {
 
