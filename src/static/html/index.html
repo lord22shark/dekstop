@@ -21,14 +21,6 @@
 						<span class="d-websocket-indicator" v-bind:class="{'d-websocket-indicator-disconnected': connected === false, 'd-websocket-indicator-connected': connected === true}"></span>
 					</div>
 					<nav class="d-window-level-5">
-						<div class="d-menu">
-							<div class="d-menu-item">
-								<u>B</u>locks
-							</div>
-							<div class="d-menu-content">
-								<span v-for="(block, index) in blocks" v-on:click="onGetBlockClickHandler($event, block)">{{block}}</span>
-							</div>
-						</div>
 						<div class="d-menu" v-on:click="onSaveClickHandler($event)">
 							<u>S</u>ave
 						</div>
@@ -56,6 +48,19 @@
 							</span>
 						</div>
 					</nav>
+					<div class="d-window-separator"></div>
+					<nav class="d-window-level-6">
+						<div class="d-menu">
+							Blocks:
+						</div>
+						<input type="search" class="d-window-input" accesskey="i" v-model="query" v-on:keyup.enter="onSelectFilteredBlock($event)" />
+						<div class="d-window-level-6-hover" v-if="query">
+							<div v-for="block in onFilterBlocks">
+								<span class="d-window-level-6-item">{{block}}</span>
+								<div class="d-window-level-6-item-separator"></div>
+							</div>
+						</div>
+					</nav>
 				</div>
 				<main class="d-content-container">
 					<section class="d-content-input">
@@ -69,7 +74,7 @@
 						</div>
 					</section>
 					<section class="d-content-slider"></section>
-					<section class="d-content-view">
+					<section class="d-content-view" id="view">
 						<div id="rendered" class="d-content-spacer" v-html="rendered"></div>
 					</section>
 				</main>
@@ -116,11 +121,13 @@
 					title: null,
 					block: null,
 					blocks: [],
+					filteredBlocks: [],
 					clipboards: [],
 					schedules: [],
 					shownSchedules: [],
 					spaces: 0,
 					rns: 0,
+					query: '',
 					shortcuts: {
 						'96': 0,
 						'97': 1,
@@ -249,6 +256,12 @@
 						this.title = `/@ [${data.title}]`;
 
 						this.block = data.title;
+
+						$('#editor').scrollTop(0);
+
+						$('#view').animate({
+							scrollTop: $(`#${data.title.replace(/\s+/g, '')}-toggler`).offset().top - 80
+						}, 666);
 
 						// find block scroll to
 
@@ -638,6 +651,21 @@
 					/**
 					 *
 					 */
+					onSelectFilteredBlock: function (event) {
+
+						if ((this.onFilterBlocks) && (this.onFilterBlocks.length === 1)) {
+
+							this.onGetBlockClickHandler(event, this.onFilterBlocks[0]);
+
+							this.query = '';
+
+						}
+
+					},
+
+					/**
+					 *
+					 */
 					onCopyToClipBoard: function (key) {
 
 						var clipboard = this.clipboards[this.shortcuts[key.toString()]];
@@ -735,8 +763,6 @@
 
 						var receivedMessage = JSON.parse(messageEvent.data);
 
-						//console.log(receivedMessage);
-						
 						this[receivedMessage.message].call(this, receivedMessage.data);
 						
 					},
@@ -756,6 +782,29 @@
 
 					}
 					
+				},
+				computed: {
+
+					onFilterBlocks: function () {
+
+						if (this.query) {
+
+							var criteria = this.query.trim().toLowerCase();
+
+							return this.blocks.filter(function (x) {
+
+								return x.toLowerCase().indexOf(criteria) !== -1;
+
+							});
+
+						} else {
+
+							return [];
+
+						}
+
+					}
+
 				},
 				created: function () {
 

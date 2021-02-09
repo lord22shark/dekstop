@@ -172,7 +172,7 @@ function onFetchParseAndSend () {
  */
 function onWatcherChangeHandler (filename, stats) {
 
-	console.log('onWatcherChangeHandler', filename, stats.mtime);
+	console.log('onWatcherChangeHandler', filename, (stats) ? stats.mtime : '...');
 
 	onFetchParseAndSend();
 
@@ -183,7 +183,7 @@ function onWatcherChangeHandler (filename, stats) {
  */
 function onWatcherAddHandler (filename, stats) {
 
-	console.log('onWatcherAddHandler', filename, stats.mtime);
+	console.log('onWatcherAddHandler', filename, (stats) ? stats.mtime : '...');
 
 	// broadcast.send(GLOB ->PARSE && VIEW OR PARSE&&VIEW.then(join))
 
@@ -317,8 +317,6 @@ function onMessage (message) {
 					const blockContent = `/@ [${data}]\nA new Dekstop block...\n[@\\`;
 
 					const filename = path.join(Dekstop.locals.fullpath, data + '.dkt');
-
-					console.log(blockContent, filename);
 
 					fs.writeFile(filename, blockContent, (error) => {
 
@@ -549,7 +547,7 @@ Dekstop.ws('/connect', (websocket, request) => {
 
 	Clients[_id] = websocket;
 
-	Watcher = chokidar.watch(path.join('.', request.app.locals.path, '*.dkt'), {
+	Watcher = chokidar.watch(path.join(request.app.locals.fullpath, '*.dkt'), {
 		persistent: true,
 		ignored: /\.git/
 	});

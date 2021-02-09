@@ -373,9 +373,11 @@ const parser = (source, stringify) => {
 
 		});
 
+		const _id = tagMatch[1].replace(/\s+/g, '');
+
 		html.push(`
 			<div class="tag-container" data-title="${tagMatch[1]}">
-				<div id="${tagMatch[1]}-toggler" class="tag-title" v-on:click="onGetBlockClickHandler($event, '${tagMatch[1]}')">[${tagMatch[1]}]</div>
+				<div id="${_id}-toggler" class="tag-title">[${tagMatch[1]}]</div>
 				<div id="${tagMatch[1]}-content" class="tag-content">
 					${lines.join('\r\n')}
 				</div>
