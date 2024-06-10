@@ -213,6 +213,7 @@ const parser = (source, stringify) => {
 	const shortHourPattern = /\(\[\{H(A|B|N)(\d+)\}\]\)/;
 	const shortCodePattern = /\<\(\[\{C(\d+)\}\]\)\>/;
 	const urlPattern = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
+	const separatorPattern = /\-\=\-\=\-\=\-\=/g; 
 
 	const tagMatches = [];
 
@@ -282,6 +283,7 @@ const parser = (source, stringify) => {
 		}
 
 		// Codes
+
 		let codeMatch;
 
 		let codeMatches = [];
@@ -299,6 +301,7 @@ const parser = (source, stringify) => {
 		}
 
 		// Clipboard
+
 		let clipboardMatch;
 
 		while ((clipboardMatch = clipboardPattern.exec(tagMatch[2])) != null) {
@@ -348,7 +351,6 @@ const parser = (source, stringify) => {
 
 				}
 
-
 				let shortCodeMatch = shortCodePattern.exec(copy);
 
 				if (shortCodeMatch) {
@@ -363,7 +365,15 @@ const parser = (source, stringify) => {
 
 				} else {
 
-					copy = `<p>${copy}</p>`;
+					if (copy.match(separatorPattern)) {
+
+						copy = `<hr style="margin: 3vh 0vw; box-shadow: 0px 5px 5px #303030; border-bottom-color: cornflowerblue; border-top-color: deepskyblue;">`;
+
+					} else {
+
+						copy = `<p>${copy}</p>`;
+
+					}
 
 				}
 

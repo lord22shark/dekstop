@@ -105,8 +105,8 @@ const onBundleConnectData = (datapath) => {
 
 					const matches = tagPattern.exec(blocks[0].raw);
 
-					output.lastModified.title = matches[1];
-					output.lastModified.content = matches[2].trim();
+					output.lastModified.title = ((matches) && (matches.length > 0)) ? matches[1] : '---';
+					output.lastModified.content = ((matches) && (matches.length > 0)) ?matches[2].trim() : '***';
 					output.lastModified.timestamp = blocks[0].mtime;
 
 					output.parsed = parser(blocks.map((block) => {

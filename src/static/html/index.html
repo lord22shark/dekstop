@@ -6,6 +6,7 @@
 		<link href="/lib/highlightjs/styles/hybrid.css" media="screen" rel="stylesheet" />
 		<link href="/lib/toastr/toastr.min.css" media="screen" rel="stylesheet" />
 		<link href="/css/index.css" media="screen" rel="stylesheet" />
+		<link rel="icon" type="image/png" href="/images/favicon.png" />
 	</head>
 	<body>
 		<audio id="audioNotification" style="display: none;">
@@ -44,7 +45,7 @@
 						</div>
 						<div class="d-menu" v-for="(clipboard, index) in clipboards">
 							<span v-on:click="onCopyToClipBoard(index + 48)">
-								<u>{{index}}</u>&nbsp;{{clipboard.data|strip(15)}}
+								<u>{{index}}</u>&nbsp;{{clipboard.data|strip(10)}}
 							</span>
 						</div>
 					</nav>
@@ -56,7 +57,7 @@
 						<input type="search" class="d-window-input" accesskey="i" v-model="query" v-on:keyup.enter="onSelectFilteredBlock($event)" />
 						<div class="d-window-level-6-hover" v-if="query">
 							<div v-for="block in onFilterBlocks">
-								<span class="d-window-level-6-item">{{block}}</span>
+								<span class="d-window-level-6-item" v-on:click="onGetBlockClickHandler($event, block)">{{block}}</span>
 								<div class="d-window-level-6-item-separator"></div>
 							</div>
 						</div>
@@ -294,6 +295,12 @@
 							message: 'onGetBlock',
 							data: block
 						}));
+
+						if (this.query) {
+
+							this.query = null;
+
+						}
 
 					},
 

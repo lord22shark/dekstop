@@ -10,6 +10,7 @@
 :root {
 	--black: #000000;
 	--white: #FFFFFF;
+	--blue: cornflowerblue;
 	--window-level-1-topLeft: rgb(223, 216, 223);
 	--window-level-1-rightBottom: rgb(0, 0, 0);
 	--window-level-2-topLeft: rgb(255, 248, 255);
@@ -449,6 +450,7 @@ code::-webkit-scrollbar-thumb {
 }
 
 .tag-title {
+	color: var(--blue);
 	text-align: center;
 	text-shadow: 1px 1px 3px black;
 	border-bottom: 1px solid #5e5e5e;
